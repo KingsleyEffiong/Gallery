@@ -5,6 +5,7 @@ import Login from './components/Login/Login';
 import { useState } from 'react';
 import Reg from './components/Register/Reg';
 import Slders from './components/UserGallery/Sliders/Slders';
+import User from './components/UserProfile/User';
 
 function App() {
   const [login, setLogin] = useState(false);
@@ -32,6 +33,7 @@ function App() {
       <Login setRegister={setRegister} login={login} setLogin={setLogin} register={register}/>
       <Reg register={register} setLogin={setLogin} setRegister={setRegister} login={login}/>
       <Slders />
+      <User />
     </div>
   );
 }
