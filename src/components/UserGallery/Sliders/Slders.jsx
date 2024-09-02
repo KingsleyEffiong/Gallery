@@ -40,7 +40,9 @@ function Slders({ userSlide }) {
             <i className="bi bi-arrow-right-circle-fill absolute z-50 text-white top-[48%] right-2 text-3xl cursor-pointer" onClick={handleRight}></i>
             <i className="bi bi-arrow-left-circle-fill absolute z-50 text-white top-[48%] left-2 text-3xl cursor-pointer" onClick={handleLeft}></i>
             <div className="flex flex-row">
-              <img src={images[currentId]} alt={`image${currentId}`} className={`${isAnimatingOut ? 'animate-slideOutBackCenter' : 'animate-slideInLeftImage'}`} />
+           {images.length === 0 
+           ?<p>No upload image found </p> 
+           : <img src={images[currentId]} alt={`image${currentId}`} className={`${isAnimatingOut ? 'animate-slideOutBackCenter' : 'animate-slideInLeftImage'}`} />}
             </div>
           </div>
         </div>
