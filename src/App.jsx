@@ -64,7 +64,7 @@ function App() {
       {user && (
         <>
           <Slders userSlide={userSlide} />
-          <User userProfile={userProfile} />
+          <User userProfile={userProfile} setLogin={setLogin} setUserProfile={setUserProfile} setUserSlide={setUserSlide}/>
         </>
       )}
     </div>
