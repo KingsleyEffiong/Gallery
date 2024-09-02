@@ -1,6 +1,13 @@
 import { useState } from "react";
-function Login({setRegister, setLogin, login, register}) {
+import { auth } from "../../Firebase";
+import {signInWithEmailAndPassword} from 'firebase/auth'
+
+
+
+function Login({setRegister, setLogin, login, register, setUserSlide, setUserProfile}) {
   const [isAnimating, setIsAnimating] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   function showregister(){
     setIsAnimating(true);
     setTimeout(() => {
@@ -16,6 +23,20 @@ function closeLogin(){
     setIsAnimating(false);
   }, 1000); // The duration matches the animation time
 }
+
+async function handleLogin(e) {
+  e.preventDefault();
+  try {
+  await signInWithEmailAndPassword(auth, email, password);
+  console.log('Login successful')
+  setUserSlide(true);
+  setUserProfile(true);
+  setLogin(false);
+  } catch (error) {
+    console.error("Error during sign up:", error);
+  }
+}
+
   return (
      login && (
         <div
@@ -36,6 +57,7 @@ function closeLogin(){
   type="email"
   name=""
   id=""
+  onChange={(e) => setEmail(e.target.value)}
   className="bg-transparent outline-none border-b-2 border-b-[#000] w-[100%] p-1 text-[#000] text-indent-custom font-semibold placeholder:font-normal"
   placeholder="Email"
 />
@@ -49,6 +71,7 @@ function closeLogin(){
   type="password"
   name=""
   id=""
+  onChange={(e) => setPassword(e.target.value)}
   className="bg-transparent outline-none border-b-2 border-b-[#000] w-[100%] p-1 text-[#000] text-indent-custom font-semibold placeholder:font-normal"
   placeholder="Password"
 />
@@ -64,7 +87,7 @@ function closeLogin(){
           </div>
           <span className="text-[#000] cursor-pointer">Foget password?</span>
         </div>
-        <button className="bg-custom-gradient w-[100%] rounded-full p-2 mt-3 text-white text-lg">Login</button>
+        <button className="bg-custom-gradient w-[100%] rounded-full p-2 mt-3 text-white text-lg" onClick={handleLogin}>Login</button>
         <div className="flex flex-row justify-center items-center space-x-2 text-sm mt-3">
           <label htmlFor="" className="text-[#000]">Dont have an account</label>
           <span className="text-[#000] cursor-pointer font-bold" onClick={ showregister}>Register</span>

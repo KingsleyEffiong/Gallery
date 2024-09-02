@@ -1,16 +1,28 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// import {}
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCoN9TTMS-K4G5Ggia9zxVCYuY8I4aHV-Y",
-  authDomain: "photo-gallery-3b616.firebaseapp.com",
-  projectId: "photo-gallery-3b616",
-  storageBucket: "photo-gallery-3b616.appspot.com",
-  messagingSenderId: "172299377160",
-  appId: "1:172299377160:web:40e2ee9945e5482b028fbd",
-  measurementId: "G-HJQ92J86FQ"
+
+  apiKey: "AIzaSyAntVdkYB8JEJIoDi6GI2zrPOXkBZIybjQ",
+
+  authDomain: "gallery-c64b1.firebaseapp.com",
+
+  projectId: "gallery-c64b1",
+
+  storageBucket: "gallery-c64b1.appspot.com",
+
+  messagingSenderId: "812339870998",
+
+  appId: "1:812339870998:web:3c51d656c4b79ed916a437",
+
+  measurementId: "G-GCQMXTYL2T"
+
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
-console.log(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);

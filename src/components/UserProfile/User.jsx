@@ -1,29 +1,42 @@
+import { useState } from 'react';
+import { uploadImage } from '../firebaseFun';
+import { auth } from '../../Firebase';
 
-function User() {
+function User({ userProfile }) {
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    const userId = auth.currentUser.uid;
+    await uploadImage(file, userId);
+    alert('Image uploaded successfully!');
+    window.location.reload();
+  };
+
   return (
-    <div className="w-60 h-auto fixed top-0 right-0  bg-[transparent] p-2 shadow-custom animate-slideInCenter flex flex-col justify-center items-center">
-        <div className="flex flex-row justify-between w-[100%] my-2">
-
-            <i className="bi bi-person-circle text-white text-[2rem]"></i>
-            <button className=" p-2 rounded-full text-[#ffffff] font-semibold animate-slideInCenter">
-        <i className="bi bi-box-arrow-right text-2xl"></i>
+    userProfile && <div className="w-60 h-auto fixed top-0 right-0 bg-[transparent] p-2 shadow-custom animate-slideInCenter flex flex-col justify-center items-center">
+      <div className="flex flex-row justify-between w-[100%]">
+        <i className="bi bi-person-circle text-white text-[2rem]"></i>
+        <button className="p-2 rounded-full text-[#ffffff] font-semibold animate-slideInCenter">
+          <i className="bi bi-box-arrow-right text-2xl"></i>
         </button>
-        </div>
-            
-            <div className="flex items-center justify-center w-full">
-            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-[#05061E]  dark:border-white dark:hover:border-[white] dark:hover:bg-[#3A095B]">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg className="w-8 h-8 mb-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                    </svg>
-                    <p className="mb-2 text-sm text-white dark:text-white"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                    <p className="text-xs text-white dark:text-white">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                </div>
-                <input id="dropzone-file" type="file" className="hidden" />
-            </label>
-        </div> 
-            </div>
-  )
+      </div>
+      <label className="block mb-2 text-sm font-medium text-[#05061E] dark:text-white" htmlFor="file_input">Upload Image</label>
+      <input
+        className="block w-full text-sm text-[#05061E] border border-[#05061E] cursor-pointer bg-[#05061E] dark:text-gray-400 focus:outline-none dark:bg-[#05061E] dark:border-[#05061E] dark:placeholder-gray-400"
+        aria-describedby="file_input_help"
+        id="file_input"
+        type="file"
+        onChange={handleFileChange}
+      />
+      <button className="bg-white p-1 rounded-full w-[100%] mt-2" onClick={handleUpload}>
+        Upload
+      </button>
+    </div>
+  );
 }
 
-export default User
+export default User;

@@ -1,7 +1,27 @@
 import { useState } from "react";
+import { auth } from "../../Firebase";
+import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth'
 
 function Reg({register, setRegister, setLogin,login}) {
     const [isAnimating, setIsAnimating] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    async function handleReg(e) {
+      e.preventDefault();
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, {
+          displayName:name,
+        })
+        setRegister(false);
+        setLogin(true);
+      } catch (error) {
+        console.error("Error during sign up:", error);
+      }
+    }
+
     function showLogin(){
           setIsAnimating(true);
           setTimeout(() => {
@@ -32,6 +52,8 @@ function Reg({register, setRegister, setLogin,login}) {
 type="name"
 name=""
 id=""
+onChange={(e) => setName(e.target.value)}
+value={name}
 className="bg-transparent outline-none border-b-2 border-b-[#000] w-[100%] p-1 text-[#000] text-indent-custom font-semibold placeholder:font-normal"
 placeholder="Name"
 />
@@ -46,6 +68,8 @@ placeholder="Name"
 type="email"
 name=""
 id=""
+value={email}
+onChange={(e) => setEmail(e.target.value)}
 className="bg-transparent outline-none border-b-2 border-b-[#000] w-[100%] p-1 text-[#000] text-indent-custom font-semibold placeholder:font-normal"
 placeholder="Email"
 />
@@ -56,8 +80,10 @@ placeholder="Email"
       <div className="relative w-[100%]  my-4">
       <input
 type="password"
-name=""
+name="" 
 id=""
+value={password}
+onChange={(e) => setPassword(e.target.value)}
 className="bg-transparent outline-none border-b-2 border-b-[#000] w-[100%] p-1 text-[#000] text-indent-custom font-semibold placeholder:font-normal"
 placeholder="Password"
 />
@@ -72,7 +98,7 @@ placeholder="Password"
         </div>
         <span className="text-[#000] cursor-pointer">Foget password?</span>
       </div>
-      <button className="bg-custom-gradient w-[100%] rounded-full p-2 mt-3 text-white text-lg">Login</button>
+      <button className="bg-custom-gradient w-[100%] rounded-full p-2 mt-3 text-white text-lg" onClick={handleReg}>Sign up</button>
       <div className="flex flex-row justify-center items-center space-x-2 text-sm mt-3">
         <label htmlFor="" className="text-[#000]">Already have an account</label>
         <span className="text-[#000] cursor-pointer font-bold" onClick={showLogin}>Login</span>

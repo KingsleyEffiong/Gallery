@@ -1,15 +1,40 @@
 import './index.css';
- import bgImage from './assets/images/neon-light-art-dark-night-moonlit-seas-cloud_982322-4461 1.png'
+import bgImage from './assets/images/neon-light-art-dark-night-moonlit-seas-cloud_982322-4461 1.png'
 import Nav from './components/Navbar/Nav';
 import Login from './components/Login/Login';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Reg from './components/Register/Reg';
 import Slders from './components/UserGallery/Sliders/Slders';
 import User from './components/UserProfile/User';
+import { auth } from './Firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 function App() {
   const [login, setLogin] = useState(false);
   const [register, setRegister] = useState(false);
+  const [userSlide, setUserSlide] = useState(false);
+  const [userProfile, setUserProfile] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setUserSlide(true);
+        setUserProfile(true);
+      } else {
+        setUser(null);
+        setLogin(true);
+        setUserSlide(false);
+        setUserProfile(false);
+      }
+    });
+
+    // Clean up the subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div
       className=""
@@ -30,10 +55,18 @@ function App() {
       }}
     >
       <Nav />
-      <Login setRegister={setRegister} login={login} setLogin={setLogin} register={register}/>
-      <Reg register={register} setLogin={setLogin} setRegister={setRegister} login={login}/>
-      <Slders />
-      <User />
+      {!user && (
+        <>
+          <Login setRegister={setRegister} login={login} setLogin={setLogin} register={register} />
+          <Reg register={register} setLogin={setLogin} setRegister={setRegister} login={login} />
+        </>
+      )}
+      {user && (
+        <>
+          <Slders userSlide={userSlide} />
+          <User userProfile={userProfile} />
+        </>
+      )}
     </div>
   );
 }
